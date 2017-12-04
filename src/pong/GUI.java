@@ -18,6 +18,7 @@ public class GUI extends JFrame implements ActionListener
 	private JPanel canvas;
 
 	
+	
 	//Menübuttons
 	private JButton singleplayer;
 	private JButton multiplayer;
