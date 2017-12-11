@@ -1,5 +1,6 @@
 package pong;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -19,6 +20,8 @@ public class GUI extends JFrame implements ActionListener
 	private CardLayout cl;
 	private JPanel mainMenu;
 	private JPanel canvas;
+    private PlayField pf;
+
 
 	// Menübuttons
 	private JTextPane title;
@@ -49,6 +52,12 @@ public class GUI extends JFrame implements ActionListener
 		canvas = new JPanel();
 		canvas.setBackground(Color.WHITE);
 
+        
+        pf = new PlayField(this);
+        canvas.setLayout(new BorderLayout());
+        canvas.add(pf, BorderLayout.CENTER);
+        contentPane.add(canvas);
+
 		contentPane.add(mainMenu);
 		contentPane.add(canvas);
 
@@ -68,18 +77,24 @@ public class GUI extends JFrame implements ActionListener
 		singleplayer.setContentAreaFilled(false);
 		singleplayer.setBorderPainted(false);
 		mainMenu.add(singleplayer);
+		singleplayer.addActionListener(this);
+
 
 		multiplayer = new JButton("Multiplayer");
 		multiplayer.setOpaque(false);
 		multiplayer.setContentAreaFilled(false);
 		multiplayer.setBorderPainted(false);
 		mainMenu.add(multiplayer);
+		multiplayer.addActionListener(this);
+
 
 		settings = new JButton("Settings");
 		settings.setOpaque(false);
 		settings.setContentAreaFilled(false);
 		settings.setBorderPainted(false);
 		mainMenu.add(settings);
+		settings.addActionListener(this);
+
 
 		exit = new JButton("Exit");
 		exit.setOpaque(false);
@@ -99,6 +114,10 @@ public class GUI extends JFrame implements ActionListener
 		{
 			System.exit(0);
 		}
+        if(e.getSource() == singleplayer)
+        {
+            cl.show(getContentPane(), "canvas");
+        }
 	}
 	
 	public Image loadImage(String ImageName)
