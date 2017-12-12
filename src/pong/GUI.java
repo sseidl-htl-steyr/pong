@@ -29,6 +29,9 @@ public class GUI extends JFrame implements ActionListener
 	private JButton multiplayer;
 	private JButton settings;
 	private JButton exit;
+	
+    private boolean NewGame;
+
 
 	public GUI()
 	{
@@ -66,6 +69,7 @@ public class GUI extends JFrame implements ActionListener
 
 		cl.show(contentPane, "main");
 
+
 		
 		title = new JTextPane();
 		title.setText("Pong");
@@ -78,7 +82,6 @@ public class GUI extends JFrame implements ActionListener
 		singleplayer.setBorderPainted(false);
 		mainMenu.add(singleplayer);
 		singleplayer.addActionListener(this);
-
 
 		multiplayer = new JButton("Multiplayer");
 		multiplayer.setOpaque(false);
@@ -117,12 +120,21 @@ public class GUI extends JFrame implements ActionListener
         if(e.getSource() == singleplayer)
         {
             cl.show(getContentPane(), "canvas");
+            setNewGame(true);
         }
 	}
 	
 	public Image loadImage(String ImageName)
 	{
 		return Toolkit.getDefaultToolkit().getImage(getClass().getResource(ImageName));
+	}
+
+	public boolean isNewGame() {
+		return NewGame;
+	}
+
+	public void setNewGame(boolean newGame) {
+		NewGame = newGame;
 	}
 
 }
