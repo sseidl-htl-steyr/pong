@@ -24,6 +24,8 @@ public class GUI extends JFrame implements ActionListener
 	private JPanel mainMenu;
 	private PlayField pf;
 	public Container contentPane;
+	private SinglePlayerOptions spo;
+	private JPanel singlePlayerOpt;
 
 	// Menübuttons
 	private JTextPane title;
@@ -56,6 +58,14 @@ public class GUI extends JFrame implements ActionListener
 		// 0.5F)))); //Hoehe der Buttons veraendern
 
 		mainMenu.add(vBox);
+
+		spo = new SinglePlayerOptions(this);
+		
+		singlePlayerOpt = new JPanel();
+		singlePlayerOpt.setLayout(new BorderLayout());
+		singlePlayerOpt.add(spo, BorderLayout.CENTER);
+		
+		cl.addLayoutComponent(singlePlayerOpt, "SingelOptions");
 
 
 		pf = new PlayField(this);
@@ -121,7 +131,7 @@ public class GUI extends JFrame implements ActionListener
 		}
 		if (e.getSource() == singleplayer)
 		{
-			cl.show(getContentPane(), "canvas");
+			cl.show(getContentPane(), "SingelOptions");
 		}
 	}
 
