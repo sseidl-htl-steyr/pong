@@ -22,7 +22,6 @@ public class GUI extends JFrame implements ActionListener
 {
 	public CardLayout cl;
 	private JPanel mainMenu;
-	private JPanel canvas;
 	private PlayField pf;
 	public Container contentPane;
 
@@ -58,19 +57,12 @@ public class GUI extends JFrame implements ActionListener
 
 		mainMenu.add(vBox);
 
-		canvas = new JPanel();
-		canvas.setBackground(Color.WHITE);
 
 		pf = new PlayField(this);
-		canvas.setLayout(new BorderLayout());
-		canvas.add(pf, BorderLayout.CENTER);
-		contentPane.add(canvas);
 
 		contentPane.add(mainMenu);
-		contentPane.add(canvas);
 
 		cl.addLayoutComponent(mainMenu, "main");
-		cl.addLayoutComponent(canvas, "canvas");
 
 		cl.show(contentPane, "main");
 
