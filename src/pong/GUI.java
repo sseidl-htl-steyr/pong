@@ -20,10 +20,11 @@ import javax.swing.JTextPane;
 
 public class GUI extends JFrame implements ActionListener
 {
-	private CardLayout cl;
+	public CardLayout cl;
 	private JPanel mainMenu;
 	private JPanel canvas;
 	private PlayField pf;
+	public Container contentPane;
 
 	// Menübuttons
 	private JTextPane title;
@@ -42,7 +43,7 @@ public class GUI extends JFrame implements ActionListener
 		setIconImage(loadImage("Pong_Icon.png"));
 		// setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("Pong_Icon.png")));
 
-		Container contentPane = getContentPane();
+		contentPane = getContentPane();
 		cl = new CardLayout();
 		contentPane.setLayout(cl);
 
