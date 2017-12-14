@@ -9,19 +9,22 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
 
-public class GUI extends JFrame implements ActionListener
-{
-	private CardLayout cl;
+public class GUI extends JFrame implements ActionListener {
+	public CardLayout cl;
 	private JPanel mainMenu;
 	private JPanel canvas;
-    private PlayField pf;
-
+	private PlayField pf;
+	private JPanel p_singlePlayer;
+	private SinglePlayerOptions spo;
+	public Container contentPane;
 
 	// Menübuttons
 	private JTextPane title;
@@ -29,9 +32,8 @@ public class GUI extends JFrame implements ActionListener
 	private JButton multiplayer;
 	private JButton settings;
 	private JButton exit;
-	
-    private boolean NewGame;
 
+	private boolean NewGame;
 
 	public GUI()
 	{
@@ -43,7 +45,7 @@ public class GUI extends JFrame implements ActionListener
 		setIconImage(loadImage("Pong_Icon.png"));
 //		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("Pong_Icon.png")));
 		
-		Container contentPane = getContentPane();
+		contentPane = getContentPane();
 		cl = new CardLayout();
 		contentPane.setLayout(cl);
 
@@ -52,20 +54,27 @@ public class GUI extends JFrame implements ActionListener
 //		mainMenu = new JPanel(new GridLayout(5, 1));
 //		mainMenu.setBackground(Color.GREEN);
 
+        pf = new PlayField(this);
+		spo = new SinglePlayerOptions(this);
+		
 		canvas = new JPanel();
 		canvas.setBackground(Color.WHITE);
-
-        
-        pf = new PlayField(this);
+		
+		p_singlePlayer = new JPanel();
+		p_singlePlayer.setLayout(new BorderLayout());
+		p_singlePlayer.add(spo);
+		
         canvas.setLayout(new BorderLayout());
         canvas.add(pf, BorderLayout.CENTER);
         contentPane.add(canvas);
 
 		contentPane.add(mainMenu);
 		contentPane.add(canvas);
+		contentPane.add(p_singlePlayer);
 
 		cl.addLayoutComponent(mainMenu, "main");
 		cl.addLayoutComponent(canvas, "canvas");
+		cl.addLayoutComponent(p_singlePlayer, "singleOption");
 
 		cl.show(contentPane, "main");
 
@@ -111,21 +120,17 @@ public class GUI extends JFrame implements ActionListener
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-		if (e.getSource() == exit)
-		{
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == exit) {
 			System.exit(0);
 		}
-        if(e.getSource() == singleplayer)
-        {
-            cl.show(getContentPane(), "canvas");
-            setNewGame(true);
-        }
+		if (e.getSource() == singleplayer) {
+			cl.show(getContentPane(), "singleOption");
+//			setNewGame(true);
+		}
 	}
-	
-	public Image loadImage(String ImageName)
-	{
+
+	public Image loadImage(String ImageName) {
 		return Toolkit.getDefaultToolkit().getImage(getClass().getResource(ImageName));
 	}
 

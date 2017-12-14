@@ -19,6 +19,7 @@ public class PlayField extends JPanel implements KeyListener{
 	private int border_to_player = 20;
 	private int playerHeight = 100;
 	private int score = 10;
+	private String difficulty;
 	private int playerPosition_start = getHeight()/2-playerHeight/2;
 	
 	private boolean movingUp = false;
@@ -28,7 +29,6 @@ public class PlayField extends JPanel implements KeyListener{
 	public PlayField(GUI fr) {
 		super();
 		this.fr = fr;
-		
 		p = new Player();
 	}
 	
@@ -58,11 +58,11 @@ public class PlayField extends JPanel implements KeyListener{
 		// TODO Auto-generated method stub
 		if(e.getKeyCode() == KeyEvent.VK_UP) {
 			movingUp = true;
-			p.Player(movingUp, movingDown);
+			p.Player(movingUp, movingDown, difficulty);
 		}
 		if(e.getKeyCode() == KeyEvent.VK_DOWN) {
 			movingDown = true;
-			p.Player(movingUp, movingDown);
+			p.Player(movingUp, movingDown, difficulty);
 		}
 	}
 
@@ -71,11 +71,11 @@ public class PlayField extends JPanel implements KeyListener{
 		// TODO Auto-generated method stub
 		if(e.getKeyCode() == KeyEvent.VK_UP) {
 			movingUp = false;
-			p.Player(movingUp, movingDown);
+			p.Player(movingUp, movingDown, difficulty);
 		}
 		if(e.getKeyCode() == KeyEvent.VK_DOWN) {
 			movingDown = false;
-			p.Player(movingUp, movingDown);
+			p.Player(movingUp, movingDown, difficulty);
 		}
 	}
 

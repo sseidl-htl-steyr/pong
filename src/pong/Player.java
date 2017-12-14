@@ -7,16 +7,25 @@ import javax.swing.Timer;
 
 public class Player {
 	private PlayField pf;
+	private SinglePlayerOptions spo;
+	private Bot b;
 	private boolean movingUp = false;
 	private boolean movingDown = false;
 	private Component base;
 
 	private int playerPosition = 200;
+	private int player2_Position = 200;
+
 	private Timer t;
 	
-	public void Player(boolean movingUp, boolean movingDown) {
+	public void Player(boolean movingUp, boolean movingDown, String difficulty) {
 		this.movingUp = movingUp;
 		this.movingDown = movingDown;
+		
+		if(spo.isEnemyBot()) {
+			b.Bot(difficulty);
+		}
+		
 		t = new Timer(20, Move());
 		t.start();
 	}
@@ -41,5 +50,15 @@ public class Player {
 	public void setPlayerPosition(int playerPosition) {
 		this.playerPosition = playerPosition;
 	}
+
+	public int getPlayer2_Position() {
+		return player2_Position;
+	}
+
+	public void setPlayer2_Position(int player2_Position) {
+		this.player2_Position = player2_Position;
+	}
+	
+	
 	
 }
