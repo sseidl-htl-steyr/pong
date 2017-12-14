@@ -1,6 +1,6 @@
 package pong.net;
 
-public interface IClientDataHandler
+public interface IGameDataHandler
 {
     void dataArrived(int[] data);
 }

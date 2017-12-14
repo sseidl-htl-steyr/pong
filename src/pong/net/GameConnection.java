@@ -5,20 +5,22 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-public class GameServer extends Thread
+public class GameConnection extends Thread
 {
-    private Socket client;
-    private IClientDataHandler handler;
+    private Socket socket;
+    private IGameDataHandler handler;
+    private int receiveSize;
     private boolean stopped = false;
     private DataInputStream dis;
     private DataOutputStream dos;
 
-    public GameServer(Socket client, IClientDataHandler handler) throws IOException
+    public GameConnection(Socket socket, IGameDataHandler handler, int receiveSize) throws IOException
     {
-        this.client = client;
+        this.socket = socket;
         this.handler = handler;
-        dis = new DataInputStream(client.getInputStream());
-        dos = new DataOutputStream(client.getOutputStream());
+        this.receiveSize = receiveSize;
+        dis = new DataInputStream(socket.getInputStream());
+        dos = new DataOutputStream(socket.getOutputStream());
     }
 
     public void sendData(int[] data)
@@ -35,9 +37,10 @@ public class GameServer extends Thread
         }
     }
 
-    public void stopServer()
+    public void stopConnection() throws IOException
     {
         stopped = true;
+        socket.close();
     }
 
     @Override
@@ -45,14 +48,14 @@ public class GameServer extends Thread
     {
         try
         {
-            while (!client.isClosed() && !stopped)
+            while (!stopped)
             {
-                int available = dis.available();
-                if (available > 0 && (available & 0x03) == 0)
+                int available = dis.available() >> 2;
+                if (available >= receiveSize)
                 {
-                    int[] data = new int[available << 2];
+                    int[] data = new int[receiveSize];
 
-                    for (int i = 0; i < data.length; i++)
+                    for (int i = 0; i < receiveSize; i++)
                     {
                         data[i] = dis.readInt();
                     }
