@@ -20,8 +20,6 @@ import javax.swing.JTextPane;
 public class GUI extends JFrame implements ActionListener {
 	public CardLayout cl;
 	private JPanel mainMenu;
-	private JPanel canvas;
-	private PlayField pf;
 	private JPanel p_singlePlayer;
 	private SinglePlayerOptions spo;
 	public Container contentPane;
@@ -54,26 +52,16 @@ public class GUI extends JFrame implements ActionListener {
 //		mainMenu = new JPanel(new GridLayout(5, 1));
 //		mainMenu.setBackground(Color.GREEN);
 
-        pf = new PlayField(this);
 		spo = new SinglePlayerOptions(this);
-		
-		canvas = new JPanel();
-		canvas.setBackground(Color.WHITE);
 		
 		p_singlePlayer = new JPanel();
 		p_singlePlayer.setLayout(new BorderLayout());
 		p_singlePlayer.add(spo);
-		
-        canvas.setLayout(new BorderLayout());
-        canvas.add(pf, BorderLayout.CENTER);
-        contentPane.add(canvas);
 
 		contentPane.add(mainMenu);
-		contentPane.add(canvas);
 		contentPane.add(p_singlePlayer);
 
 		cl.addLayoutComponent(mainMenu, "main");
-		cl.addLayoutComponent(canvas, "canvas");
 		cl.addLayoutComponent(p_singlePlayer, "singleOption");
 
 		cl.show(contentPane, "main");

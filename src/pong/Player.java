@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
-public class Player {
+public class Player extends GameObjects{
 	private PlayField pf;
 	private SinglePlayerOptions spo;
 	private Bot b;
@@ -18,26 +18,25 @@ public class Player {
 
 	private Timer t;
 	
-	public void Player(boolean movingUp, boolean movingDown, String difficulty) {
+	public Player() {
+		super();
 		this.movingUp = movingUp;
 		this.movingDown = movingDown;
 		
-		if(spo.isEnemyBot()) {
-			b.Bot(difficulty);
-		}
+//		if(spo.isEnemyBot()) {
+//			b = new Bot();
+//		}
 		
-		t = new Timer(20, Move());
-		t.start();
 	}
 	
-	public ActionListener Move() {
-		t.restart();
-		if(movingUp) {
+	public ActionListener updateTimer() {
+//		t.restart();
+		if(pf.isMovingUp()) {
 			playerPosition = playerPosition - 5;
-		} else if(movingDown) {
+		} else if(pf.isMovingDown()) {
 			playerPosition = playerPosition + 5;
 		}
-		pf.repaint();
+//		pf.repaint();
 
 			
 		return null;
