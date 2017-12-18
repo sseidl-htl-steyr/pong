@@ -22,12 +22,11 @@ public class GUI extends JFrame implements ActionListener
 {
 	public CardLayout cl;
 	private JPanel mainMenu;
-	private PlayField pf;
 	public Container contentPane;
 	private SinglePlayerOptions spo;
 	private JPanel singlePlayerOpt;
 
-	// Menübuttons
+	// Menï¿½buttons
 	private JTextPane title;
 	private JButton singleplayer;
 	private JButton multiplayer;
@@ -59,16 +58,15 @@ public class GUI extends JFrame implements ActionListener
 
 		mainMenu.add(vBox);
 
-		spo = new SinglePlayerOptions(this);
+		spo = new SinglePlayerOptions();
 		
 		singlePlayerOpt = new JPanel();
 		singlePlayerOpt.setLayout(new BorderLayout());
 		singlePlayerOpt.add(spo, BorderLayout.CENTER);
 		
+		contentPane.add(spo);
+		
 		cl.addLayoutComponent(singlePlayerOpt, "SingelOptions");
-
-
-		pf = new PlayField(this);
 
 		contentPane.add(mainMenu);
 
