@@ -55,18 +55,18 @@ public class GUI extends JFrame implements ActionListener
 		Box vBox = Box.createVerticalBox();
 
 		// vBox.add(Box.createRigidArea(new Dimension(0, (int) (getHeight() / 1.5F +
-		// 0.5F)))); //Hoehe der Buttons veraendern
+		// 0.5F)))); // Hoehe der Buttons
+		// veraendern
 
 		mainMenu.add(vBox);
 
 		spo = new SinglePlayerOptions(this);
-		
+
 		singlePlayerOpt = new JPanel();
 		singlePlayerOpt.setLayout(new BorderLayout());
 		singlePlayerOpt.add(spo, BorderLayout.CENTER);
-		
-		cl.addLayoutComponent(singlePlayerOpt, "SingelOptions");
 
+		cl.addLayoutComponent(singlePlayerOpt, "SingelOptions");
 
 		pf = new PlayField(this);
 
