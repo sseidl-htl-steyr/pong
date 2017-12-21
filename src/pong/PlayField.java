@@ -26,6 +26,8 @@ public class PlayField extends JPanel implements KeyListener, ActionListener
     private boolean movingUp = false;
     private boolean movingDown = false;
 
+    private GameObject[] objects;
+
     public PlayField()
     {
         super();
@@ -56,6 +58,8 @@ public class PlayField extends JPanel implements KeyListener, ActionListener
         t.start();
 
         addKeyListener(this);
+
+        objects = new GameObject[] { new Player(), new Ball(), new Player() };
     }
 
     @Override
