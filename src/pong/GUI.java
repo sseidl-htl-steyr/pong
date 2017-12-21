@@ -3,7 +3,6 @@ package pong;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -13,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -53,9 +53,8 @@ public class GUI extends JFrame implements ActionListener
 
 		Box vBox = Box.createVerticalBox();
 
-		// vBox.add(Box.createRigidArea(new Dimension(0, (int) (getHeight() / 1.5F +
-		// 0.5F)))); // Hoehe der Buttons
-		// veraendern
+		vBox.add(Box.createRigidArea(new Dimension(0, (int) (getHeight() / 1.5F + 0.5F)))); // Hoehe der Buttons
+																							// veraendern
 
 		mainMenu.add(vBox);
 
@@ -66,9 +65,8 @@ public class GUI extends JFrame implements ActionListener
 		singlePlayerOpt.add(spo, BorderLayout.CENTER);
 
 		contentPane.add(spo);
-		
-		cl.addLayoutComponent(singlePlayerOpt, "SingelOptions");
 
+		cl.addLayoutComponent(singlePlayerOpt, "SingelOptions");
 
 		contentPane.add(mainMenu);
 
@@ -81,26 +79,26 @@ public class GUI extends JFrame implements ActionListener
 		title.setEditable(false);
 		// mainMenu.add(title);
 
-		singleplayer = new JButton("Singleplayer");
-		singleplayer.setSize(getWidth() / 8, 50);
+		singleplayer = new BackgroundButton(loadImage("SingleplayerButton.png"));
+		singleplayer.setSize(getWidth() / 4, 70);
 		singleplayer.setMaximumSize(singleplayer.getSize());
-		singleplayer.setOpaque(true);
-		// singleplayer.setContentAreaFilled(false);
+		singleplayer.setOpaque(false);
+		singleplayer.setContentAreaFilled(false);
 		singleplayer.setBorderPainted(false);
 		singleplayer.addActionListener(this);
 		vBox.add(singleplayer);
 
-		multiplayer = new JButton("Multiplayer");
-		multiplayer.setSize(getWidth() / 8, 50);
+		multiplayer = new BackgroundButton(loadImage("MultiplayerButton.png"));
+		// multiplayer.setSize(getWidth() / 8, 50);
 		multiplayer.setMaximumSize(singleplayer.getSize());
 		multiplayer.setOpaque(false);
-		// multiplayer.setContentAreaFilled(false);
+		multiplayer.setContentAreaFilled(false);
 		multiplayer.setBorderPainted(false);
 		multiplayer.addActionListener(this);
 		vBox.add(multiplayer);
 
 		settings = new JButton("Settings");
-		settings.setSize(getWidth() / 8, 50);
+		// settings.setSize(getWidth() / 8, 50);
 		settings.setMaximumSize(singleplayer.getSize());
 		settings.setOpaque(false);
 		// settings.setContentAreaFilled(false);
@@ -109,7 +107,7 @@ public class GUI extends JFrame implements ActionListener
 		vBox.add(settings);
 
 		exit = new JButton("Exit");
-		exit.setSize(getWidth() / 8, 50);
+		// exit.setSize(getWidth() / 8, 50);
 		exit.setMaximumSize(singleplayer.getSize());
 		// exit.setOpaque(false);
 		exit.setBackground(new Color(200, 0, 0));

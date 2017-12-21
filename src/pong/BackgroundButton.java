@@ -3,13 +3,13 @@ package pong;
 import java.awt.Graphics;
 import java.awt.Image;
 
-import javax.swing.JPanel;
+import javax.swing.JButton;
 
-public class BackgroundPanel extends JPanel
+public class BackgroundButton extends JButton
 {
 	Image bgImage;
 
-	BackgroundPanel(Image bgImage)
+	BackgroundButton(Image bgImage)
 	{
 		this.bgImage = bgImage;
 	}
@@ -18,6 +18,6 @@ public class BackgroundPanel extends JPanel
 	protected void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
-		g.drawImage(bgImage, 0, 0, getWidth(), getHeight(), this);
+		g.drawImage(bgImage, 0, 0, getWidth(), getHeight(), null);
 	}
 }
