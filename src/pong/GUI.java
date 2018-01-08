@@ -12,7 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.Box;
-import javax.swing.ImageIcon;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -29,8 +29,9 @@ public class GUI extends JFrame implements ActionListener
 	// Men�buttons
 	private JTextPane title;
 	private JButton singleplayer;
-	private JButton multiplayer;
-	private JButton settings;
+	private JButton lokalMP;
+	private JButton joinMP;
+	private JButton hostMP;
 	private JButton exit;
 
 	public GUI()
@@ -51,12 +52,12 @@ public class GUI extends JFrame implements ActionListener
 		// mainMenu = new BackgroundPanel(loadImage("Pong.png"));
 		mainMenu.setLayout(new GridLayout(1, 0));
 
+//		Box vBox = Box.createHorizontalBox();
 		Box vBox = Box.createVerticalBox();
-
+//		vBox.add(Box.createGlue());
 		vBox.add(Box.createRigidArea(new Dimension(0, (int) (getHeight() / 1.5F + 0.5F)))); // Hoehe der Buttons
 																							// veraendern
 
-		mainMenu.add(vBox);
 
 		spo = new SinglePlayerOptions();
 
@@ -78,9 +79,11 @@ public class GUI extends JFrame implements ActionListener
 		title.setText("Pong");
 		title.setEditable(false);
 		// mainMenu.add(title);
-
+		
+//		vBox.add(vBox.createHorizontalGlue());
 		singleplayer = new BackgroundButton(loadImage("SingleplayerButton.png"));
-		singleplayer.setSize(getWidth() / 4, 70);
+		singleplayer.setSize(getWidth() / 4, 100);
+//		singleplayer.setAlignmentX(getWidth()/2);
 		singleplayer.setMaximumSize(singleplayer.getSize());
 		singleplayer.setOpaque(false);
 		singleplayer.setContentAreaFilled(false);
@@ -88,36 +91,51 @@ public class GUI extends JFrame implements ActionListener
 		singleplayer.addActionListener(this);
 		vBox.add(singleplayer);
 
-		multiplayer = new BackgroundButton(loadImage("MultiplayerButton.png"));
+		lokalMP = new BackgroundButton(loadImage("localmp.png"));
 		// multiplayer.setSize(getWidth() / 8, 50);
-		multiplayer.setMaximumSize(singleplayer.getSize());
-		multiplayer.setOpaque(false);
-		multiplayer.setContentAreaFilled(false);
-		multiplayer.setBorderPainted(false);
-		multiplayer.addActionListener(this);
-		vBox.add(multiplayer);
+		lokalMP.setMaximumSize(singleplayer.getSize());
+		lokalMP.setOpaque(false);
+		lokalMP.setContentAreaFilled(false);
+		lokalMP.setBorderPainted(false);
+//		multiplayer.setAlignmentX(getWidth()/2);
+		lokalMP.addActionListener(this);
+		vBox.add(lokalMP);
+		
+		joinMP = new BackgroundButton(loadImage("joinmp.png"));
+		// multiplayer.setSize(getWidth() / 8, 50);
+		joinMP.setMaximumSize(singleplayer.getSize());
+		joinMP.setOpaque(false);
+		joinMP.setContentAreaFilled(false);
+		joinMP.setBorderPainted(false);
+//		multiplayer.setAlignmentX(getWidth()/2);
+		joinMP.addActionListener(this);
+		vBox.add(joinMP);
 
-		settings = new JButton("Settings");
+		hostMP = new BackgroundButton(loadImage("Hostmp.png"));
 		// settings.setSize(getWidth() / 8, 50);
-		settings.setMaximumSize(singleplayer.getSize());
-		settings.setOpaque(false);
-		// settings.setContentAreaFilled(false);
-		settings.setBorderPainted(false);
-		settings.addActionListener(this);
-		vBox.add(settings);
+		hostMP.setMaximumSize(singleplayer.getSize());
+		hostMP.setOpaque(false);
+		hostMP.setContentAreaFilled(false);
+		hostMP.setBorderPainted(false);
+		hostMP.addActionListener(this);
+		vBox.add(hostMP);
 
-		exit = new JButton("Exit");
+		exit = new BackgroundButton(loadImage("exit.png"));
 		// exit.setSize(getWidth() / 8, 50);
 		exit.setMaximumSize(singleplayer.getSize());
-		// exit.setOpaque(false);
-		exit.setBackground(new Color(200, 0, 0));
-		// exit.setContentAreaFilled(false);
+		 exit.setOpaque(false);
+//		exit.setBackground(new Color(200, 0, 0));
+		 exit.setContentAreaFilled(false);
 		exit.setBorderPainted(false);
 		exit.addActionListener(this);
 		vBox.add(exit);
 
-		repaint();
-		// validate();
+//		vBox.add(Box.createGlue());
+		mainMenu.add(vBox);
+
+		setVisible(true);
+		validate();
+//		repaint();
 	}
 
 	@Override
