@@ -26,7 +26,7 @@ public class GUI extends JFrame implements ActionListener
 	private SinglePlayerOptions spo;
 	private JPanel singlePlayerOpt;
 	private JPanel multiPlayerOpt;
-	private MultiPlayerOptions mpo;
+	private LocalMP mpo;
 	private boolean bool_single = false;
 	private boolean bool_multi = false;
 
@@ -35,8 +35,8 @@ public class GUI extends JFrame implements ActionListener
 	// Men�buttons
 	private JTextPane title;
 	private JButton singleplayer;
-	private JButton multiplayer;
-	private JButton settings;
+	private JButton localMP;
+	private JButton hostMP;
 	private JButton exit;
 
 	public GUI()
@@ -78,7 +78,7 @@ public class GUI extends JFrame implements ActionListener
 
 
 		
-		mpo = new MultiPlayerOptions();
+		mpo = new LocalMP();
 
 		multiPlayerOpt = new JPanel();
 		multiPlayerOpt.setLayout(new BorderLayout());
@@ -109,23 +109,23 @@ public class GUI extends JFrame implements ActionListener
 		singleplayer.addActionListener(this);
 		vBox.add(singleplayer);
 
-		multiplayer = new BackgroundButton(loadImage("MultiplayerButton.png"));
+		localMP = new BackgroundButton(loadImage("MultiplayerButton.png"));
 		// multiplayer.setSize(getWidth() / 8, 50);
-		multiplayer.setMaximumSize(singleplayer.getSize());
-		multiplayer.setOpaque(false);
-		multiplayer.setContentAreaFilled(false);
-		multiplayer.setBorderPainted(false);
-		multiplayer.addActionListener(this);
-		vBox.add(multiplayer);
+		localMP.setMaximumSize(singleplayer.getSize());
+		localMP.setOpaque(false);
+		localMP.setContentAreaFilled(false);
+		localMP.setBorderPainted(false);
+		localMP.addActionListener(this);
+		vBox.add(localMP);
 
-		settings = new JButton("Settings");
+		hostMP = new JButton("Host MP");
 		// settings.setSize(getWidth() / 8, 50);
-		settings.setMaximumSize(singleplayer.getSize());
-		settings.setOpaque(false);
+		hostMP.setMaximumSize(singleplayer.getSize());
+		hostMP.setOpaque(false);
 		// settings.setContentAreaFilled(false);
-		settings.setBorderPainted(false);
-		settings.addActionListener(this);
-		vBox.add(settings);
+		hostMP.setBorderPainted(false);
+		hostMP.addActionListener(this);
+		vBox.add(hostMP);
 
 		exit = new JButton("Exit");
 		// exit.setSize(getWidth() / 8, 50);
@@ -152,10 +152,13 @@ public class GUI extends JFrame implements ActionListener
 		{
 			cl.show(getContentPane(), "SingelOptions");
 		}
-		if (e.getSource() == multiplayer)
+		if (e.getSource() == localMP)
 		{
-			mpo.setMultiplayer(true);
+			mpo.setLocalMultiplayer(true);
 			cl.show(contentPane, "MultiOptions");
+		}
+		if (e.getSource() == hostMP) {
+			new HostMP();
 		}
 	}
 
