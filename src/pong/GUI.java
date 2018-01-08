@@ -26,7 +26,7 @@ public class GUI extends JFrame implements ActionListener
 	private SinglePlayerOptions spo;
 	private JPanel singlePlayerOpt;
 	private JPanel multiPlayerOpt;
-	private MultiPlayerOptions mpo;
+	private LocalMP mpo;
 	private boolean bool_single = false;
 	private boolean bool_multi = false;
 
@@ -35,7 +35,7 @@ public class GUI extends JFrame implements ActionListener
 	// Men�buttons
 	private JTextPane title;
 	private JButton singleplayer;
-	private JButton lokalMP;
+	private JButton localMP;
 	private JButton joinMP;
 	private JButton hostMP;
 	private JButton exit;
@@ -79,7 +79,7 @@ public class GUI extends JFrame implements ActionListener
 
 
 		
-		mpo = new MultiPlayerOptions();
+		mpo = new LocalMP();
 
 		multiPlayerOpt = new JPanel();
 		multiPlayerOpt.setLayout(new BorderLayout());
@@ -112,15 +112,15 @@ public class GUI extends JFrame implements ActionListener
 		singleplayer.addActionListener(this);
 		vBox.add(singleplayer);
 
-		lokalMP = new BackgroundButton(loadImage("localmp.png"));
+		localMP = new BackgroundButton(loadImage("localmp.png"));
 		// multiplayer.setSize(getWidth() / 8, 50);
-		lokalMP.setMaximumSize(singleplayer.getSize());
-		lokalMP.setOpaque(false);
-		lokalMP.setContentAreaFilled(false);
-		lokalMP.setBorderPainted(false);
+		localMP.setMaximumSize(singleplayer.getSize());
+		localMP.setOpaque(false);
+		localMP.setContentAreaFilled(false);
+		localMP.setBorderPainted(false);
 //		multiplayer.setAlignmentX(getWidth()/2);
-		lokalMP.addActionListener(this);
-		vBox.add(lokalMP);
+		localMP.addActionListener(this);
+		vBox.add(localMP);
 		
 		joinMP = new BackgroundButton(loadImage("joinmp.png"));
 		// multiplayer.setSize(getWidth() / 8, 50);
@@ -170,10 +170,13 @@ public class GUI extends JFrame implements ActionListener
 		{
 			cl.show(getContentPane(), "SingelOptions");
 		}
-		if (e.getSource() == multiplayer)
+		if (e.getSource() == localMP)
 		{
-			mpo.setMultiplayer(true);
+			mpo.setLocalMultiplayer(true);
 			cl.show(contentPane, "MultiOptions");
+		}
+		if(e.getSource() == hostMP) {
+			new HostMP();
 		}
 	}
 
