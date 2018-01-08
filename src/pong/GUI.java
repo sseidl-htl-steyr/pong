@@ -25,6 +25,12 @@ public class GUI extends JFrame implements ActionListener
 	public Container contentPane;
 	private SinglePlayerOptions spo;
 	private JPanel singlePlayerOpt;
+	private JPanel multiPlayerOpt;
+	private MultiPlayerOptions mpo;
+	private boolean bool_single = false;
+	private boolean bool_multi = false;
+
+	
 
 	// Men�buttons
 	private JTextPane title;
@@ -59,15 +65,30 @@ public class GUI extends JFrame implements ActionListener
 																							// veraendern
 
 
+
 		spo = new SinglePlayerOptions();
 
+		
 		singlePlayerOpt = new JPanel();
 		singlePlayerOpt.setLayout(new BorderLayout());
 		singlePlayerOpt.add(spo, BorderLayout.CENTER);
-
-		contentPane.add(spo);
+		
+		contentPane.add(singlePlayerOpt);
 
 		cl.addLayoutComponent(singlePlayerOpt, "SingelOptions");
+
+
+		
+		mpo = new MultiPlayerOptions();
+
+		multiPlayerOpt = new JPanel();
+		multiPlayerOpt.setLayout(new BorderLayout());
+		multiPlayerOpt.add(mpo, BorderLayout.CENTER);
+
+		contentPane.add(multiPlayerOpt);
+
+		
+		cl.addLayoutComponent(multiPlayerOpt, "MultiOptions");
 
 		contentPane.add(mainMenu);
 
@@ -149,11 +170,16 @@ public class GUI extends JFrame implements ActionListener
 		{
 			cl.show(getContentPane(), "SingelOptions");
 		}
+		if (e.getSource() == multiplayer)
+		{
+			mpo.setMultiplayer(true);
+			cl.show(contentPane, "MultiOptions");
+		}
 	}
 
 	public Image loadImage(String ImageName)
 	{
 		return Toolkit.getDefaultToolkit().getImage(getClass().getResource(ImageName));
 	}
-
+	
 }
