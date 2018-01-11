@@ -87,8 +87,7 @@ public class PlayField extends JPanel implements KeyListener, ActionListener
 
         g.fillRect(b.getX_Ball(), b.getY_Ball(), 20, 20); // Ball
 
-        this.setFocusable(true);
-        this.requestFocus(true);
+     
         // repaint();
         // movePlayer(g);
         // drawScore(g, score);

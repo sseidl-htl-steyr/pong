@@ -24,8 +24,10 @@ public class GUI extends JFrame implements ActionListener
 	private JPanel mainMenu;
 	public Container contentPane;
 	private SinglePlayerOptions spo;
+	private MPField mpField;
 	private JPanel singlePlayerOpt;
 	private JPanel multiPlayerOpt;
+	private JPanel multiPlayerOnline;
 	private LocalMP mpo;
 	private boolean bool_single = false;
 	private boolean bool_multi = false;
@@ -77,7 +79,16 @@ public class GUI extends JFrame implements ActionListener
 
 		cl.addLayoutComponent(singlePlayerOpt, "SingelOptions");
 
+		mpField = new MPField();
 
+		multiPlayerOnline = new JPanel();
+		multiPlayerOnline.setLayout(new BorderLayout());
+		multiPlayerOnline.add(mpField, BorderLayout.CENTER);
+
+		contentPane.add(multiPlayerOnline);
+
+		
+		cl.addLayoutComponent(multiPlayerOnline, "OnlineMP");
 		
 		mpo = new LocalMP();
 
@@ -176,10 +187,19 @@ public class GUI extends JFrame implements ActionListener
 			cl.show(contentPane, "MultiOptions");
 		}
 		if(e.getSource() == hostMP) {
-			new HostMP();
+			new ManageMP("host");
+			cl.show(contentPane, "OnlineMP");
 		}
+		if(e.getSource() == joinMP) {
+			new ManageMP("join");
+			cl.show(contentPane, "OnlineMP");
+		} 
 	}
 
+//	public void showMPField() {
+//		cl.show(contentPane, "OnlineMP");
+//	}
+	
 	public Image loadImage(String ImageName)
 	{
 		return Toolkit.getDefaultToolkit().getImage(getClass().getResource(ImageName));

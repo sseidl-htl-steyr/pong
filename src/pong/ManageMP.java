@@ -1,11 +1,14 @@
 package pong;
 
 import java.awt.Color;
+import pong.net.*;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.Socket;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,10 +16,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class HostMP extends JFrame implements ActionListener{
+public class ManageMP extends JFrame implements ActionListener{
 	public JLabel l_host;
 	public JLabel l_port;
 	public JLabel l_username;
+	
+	public int i_port;
+
+	ServerThread server;
+	PlayField pf;
+	GUI g;
 	
 	public JPanel contentPane;
 	public FlowLayout fl;
@@ -26,11 +35,22 @@ public class HostMP extends JFrame implements ActionListener{
 	public JTextField t_host;
 	public JTextField t_port;
 	public JButton b_enter;
+	public String joinOrhost;
+	private static Socket socket;
+
+    private IServerConnectionHandler handler;
 
 	
-	public HostMP() {
+	public ManageMP(String s_JoinOrHost) {
+		this.joinOrhost = s_JoinOrHost;
+		
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setTitle("BSS Pong");
+		if(s_JoinOrHost == "join") {
+			setTitle("Join Game");
+		}
+		if(s_JoinOrHost == "host") {
+			setTitle("Host Game");
+		}
 		contentPane = (JPanel) getContentPane();
 		setSize(250,150);
 		setResizable(false);
@@ -70,6 +90,28 @@ public class HostMP extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent arg0) {
 		if(arg0.getSource() == b_enter) {
 			// TODO: Check Connection, Open PlayField
+			if(t_port.getText() != "" && t_host.getText() != "" && t_username.getText() != "") {
+				i_port = Integer.parseInt(t_port.getText());
+				System.out.println(i_port);
+				
+				if(joinOrhost == "join") {
+					try {
+						socket = new Socket(t_host.getText(), i_port);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} else {
+					try {
+						server = new ServerThread(i_port, handler);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+//				g.showMPField();
+				this.dispose();
+			}
 		}
 	}
 }
