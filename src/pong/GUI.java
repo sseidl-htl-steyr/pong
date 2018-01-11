@@ -2,21 +2,15 @@ package pong;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Color;
 import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JTextPane;
 
 public class GUI extends JFrame implements ActionListener
 {
@@ -35,7 +29,6 @@ public class GUI extends JFrame implements ActionListener
 	
 
 	// Men�buttons
-	private JTextPane title;
 	private JButton singleplayer;
 	private JButton localMP;
 	private JButton joinMP;
@@ -58,13 +51,8 @@ public class GUI extends JFrame implements ActionListener
 
 		mainMenu = new BackgroundPanel(loadImage("Pong_Test.png"));
 		// mainMenu = new BackgroundPanel(loadImage("Pong.png"));
-		mainMenu.setLayout(new GridLayout(1, 0));
+		mainMenu.setLayout(null);
 
-//		Box vBox = Box.createHorizontalBox();
-		Box vBox = Box.createVerticalBox();
-//		vBox.add(Box.createGlue());
-		vBox.add(Box.createRigidArea(new Dimension(0, (int) (getHeight() / 1.5F + 0.5F)))); // Hoehe der Buttons
-																							// veraendern
 
 
 
@@ -106,64 +94,57 @@ public class GUI extends JFrame implements ActionListener
 		cl.addLayoutComponent(mainMenu, "main");
 
 		cl.show(contentPane, "main");
-
-		title = new JTextPane();
-		title.setText("Pong");
-		title.setEditable(false);
-		// mainMenu.add(title);
 		
-//		vBox.add(vBox.createHorizontalGlue());
+
+		
 		singleplayer = new BackgroundButton(loadImage("SingleplayerButton.png"));
 		singleplayer.setSize(getWidth() / 4, 100);
-//		singleplayer.setAlignmentX(getWidth()/2);
+		int x = (getWidth()/2)-(singleplayer.getWidth()/2);
+		singleplayer.setBounds(x, getHeight()/2+70, getWidth()/4, 50);
+
+		//singleplayer.setBounds(x, getHeight()/2+70, getWidth()/4, 50);
 		singleplayer.setMaximumSize(singleplayer.getSize());
 		singleplayer.setOpaque(false);
 		singleplayer.setContentAreaFilled(false);
 		singleplayer.setBorderPainted(false);
 		singleplayer.addActionListener(this);
-		vBox.add(singleplayer);
+		mainMenu.add(singleplayer);
 
 		localMP = new BackgroundButton(loadImage("localmp.png"));
-		// multiplayer.setSize(getWidth() / 8, 50);
 		localMP.setMaximumSize(singleplayer.getSize());
+		localMP.setBounds(x, getHeight()/2+120, getWidth()/4, 50);
 		localMP.setOpaque(false);
 		localMP.setContentAreaFilled(false);
 		localMP.setBorderPainted(false);
-//		multiplayer.setAlignmentX(getWidth()/2);
 		localMP.addActionListener(this);
-		vBox.add(localMP);
+		mainMenu.add(localMP);
+		localMP.addActionListener(this);
 		
 		joinMP = new BackgroundButton(loadImage("joinmp.png"));
-		// multiplayer.setSize(getWidth() / 8, 50);
-		joinMP.setMaximumSize(singleplayer.getSize());
+		joinMP.setBounds(x, getHeight()/2+170, getWidth()/4, 50);
 		joinMP.setOpaque(false);
 		joinMP.setContentAreaFilled(false);
 		joinMP.setBorderPainted(false);
-//		multiplayer.setAlignmentX(getWidth()/2);
 		joinMP.addActionListener(this);
-		vBox.add(joinMP);
+		mainMenu.add(joinMP);
 
 		hostMP = new BackgroundButton(loadImage("Hostmp.png"));
-		// settings.setSize(getWidth() / 8, 50);
-		hostMP.setMaximumSize(singleplayer.getSize());
+		hostMP.setBounds(x, getHeight()/2+220, getWidth()/4, 50);
 		hostMP.setOpaque(false);
 		hostMP.setContentAreaFilled(false);
 		hostMP.setBorderPainted(false);
 		hostMP.addActionListener(this);
-		vBox.add(hostMP);
+		mainMenu.add(hostMP);
 
 		exit = new BackgroundButton(loadImage("exit.png"));
-		// exit.setSize(getWidth() / 8, 50);
-		exit.setMaximumSize(singleplayer.getSize());
-		 exit.setOpaque(false);
-//		exit.setBackground(new Color(200, 0, 0));
-		 exit.setContentAreaFilled(false);
+		exit.setMaximumSize(singleplayer.getSize());		
+		exit.setBounds(x, getHeight()/2+270, getWidth()/4, 50);
+		exit.setOpaque(false);
+		exit.setContentAreaFilled(false);
 		exit.setBorderPainted(false);
 		exit.addActionListener(this);
-		vBox.add(exit);
+		mainMenu.add(exit);
 
-//		vBox.add(Box.createGlue());
-		mainMenu.add(vBox);
 
 		setVisible(true);
 		validate();
