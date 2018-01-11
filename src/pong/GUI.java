@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.Image;
-import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,7 +11,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JTextPane;
 
 public class GUI extends JFrame implements ActionListener
 {
@@ -22,16 +20,15 @@ public class GUI extends JFrame implements ActionListener
 	private SinglePlayerOptions spo;
 	private JPanel singlePlayerOpt;
 	private JPanel multiPlayerOpt;
-	private MultiPlayerOptions mpo;
+	private LocalMP mpo;
 	private boolean bool_single = false;
 	private boolean bool_multi = false;
 
 	
 
 	// Men�buttons
-	private JTextPane title;
 	private JButton singleplayer;
-	private JButton lokalMP;
+	private JButton localMP;
 	private JButton joinMP;
 	private JButton hostMP;
 	private JButton exit;
@@ -70,7 +67,7 @@ public class GUI extends JFrame implements ActionListener
 
 
 		
-		mpo = new MultiPlayerOptions();
+		mpo = new LocalMP();
 
 		multiPlayerOpt = new JPanel();
 		multiPlayerOpt.setLayout(new BorderLayout());
@@ -102,14 +99,15 @@ public class GUI extends JFrame implements ActionListener
 		singleplayer.addActionListener(this);
 		mainMenu.add(singleplayer);
 
-		lokalMP = new BackgroundButton(loadImage("localmp.png"));
-		lokalMP.setMaximumSize(singleplayer.getSize());
-		lokalMP.setBounds(x, getHeight()/2+120, getWidth()/4, 50);
-		lokalMP.setOpaque(false);
-		lokalMP.setContentAreaFilled(false);
-		lokalMP.setBorderPainted(false);
-		lokalMP.addActionListener(this);
-		mainMenu.add(lokalMP);
+		localMP = new BackgroundButton(loadImage("localmp.png"));
+		localMP.setMaximumSize(singleplayer.getSize());
+		localMP.setBounds(x, getHeight()/2+120, getWidth()/4, 50);
+		localMP.setOpaque(false);
+		localMP.setContentAreaFilled(false);
+		localMP.setBorderPainted(false);
+		localMP.addActionListener(this);
+		mainMenu.add(localMP);
+		localMP.addActionListener(this);
 		
 		joinMP = new BackgroundButton(loadImage("joinmp.png"));
 		joinMP.setBounds(x, getHeight()/2+170, getWidth()/4, 50);
@@ -153,10 +151,13 @@ public class GUI extends JFrame implements ActionListener
 		{
 			cl.show(getContentPane(), "SingelOptions");
 		}
-		if (e.getSource() == lokalMP)
+		if (e.getSource() == localMP)
 		{
-			mpo.setMultiplayer(true);
+			mpo.setLocalMultiplayer(true);
 			cl.show(contentPane, "MultiOptions");
+		}
+		if(e.getSource() == hostMP) {
+			new HostMP();
 		}
 	}
 
