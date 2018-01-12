@@ -1,68 +1,36 @@
 package pong;
 
-import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.Timer;
+import java.awt.Color;
 
 import pong.math.Point2;
 
-public class Ball extends GameObject implements ActionListener
+public class Ball extends GameObject
 {
-    private int x_Ball = 200;
-    private int y_Ball = 100;
-    private Timer t;
+    private IBallListener listener;
 
-    public Ball()
+    public Ball(PlayField pf, Point2 location, int width, int height, Color color, IBallListener listener)
     {
-        super(new Point2(0F, 0F));
+        super(pf, location, width, height, color, false);
+        this.listener = listener;
     }
 
-    public ActionListener updateTimer()
+    @Override
+    protected void collisionDetected(boolean bounds, int axis)
     {
-
-        x_Ball += 5;
-
-        if (y_Ball >= 0 && y_Ball <= 400)
-            y_Ball += 10;
+        if (axis == 0)
+        {
+            if (bounds)
+            {
+                listener.ballOutOfField(location.x < 0 ? 0 : 1);
+            }
+            else
+            {
+                velocity.x = -velocity.x;
+            }
+        }
         else
-            y_Ball -= 10;
-
-        return null;
+        {
+            velocity.y = -velocity.y;
+        }
     }
-
-    public int getX_Ball()
-    {
-        return x_Ball;
-    }
-
-    public void setX_Ball(int x_Ball)
-    {
-        this.x_Ball = x_Ball;
-    }
-
-    public int getY_Ball()
-    {
-        return y_Ball;
-    }
-
-    public void setY_Ball(int y_Ball)
-    {
-        this.y_Ball = y_Ball;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e)
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    protected void draw(Graphics g)
-    {
-        g.fillRect(-10, -10, 10, 10);
-    }
-
 }

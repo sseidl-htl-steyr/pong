@@ -2,6 +2,8 @@ package pong;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -10,56 +12,63 @@ import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class PlayField extends JPanel implements KeyListener, ActionListener
+import pong.math.Point2;
+import pong.math.Vec2;
+
+public class PlayField extends JPanel implements KeyListener, ActionListener, IBallListener
 {
-    Graphics g;
-    private SinglePlayerOptions spo;
-    private Player p;
-    private Ball b;
-    private int border_to_player = 20;
-    private int playerHeight = 100;
-    private int score = 10;
-    private String difficulty;
-    private int playerPosition_start = getHeight() / 2 - playerHeight / 2;
+    private static final long serialVersionUID = 2944593318509141449L;
+
+    private static final int BAT_WIDTH = 15;
+    private static final int BAT_HEIGHT = 150;
+    private static final int BALL_SIZE = 15;
+
+    private static final int BAT_TO_BORDER_DISTANCE = 30;
+
+    private static final float BALL_VELOCITY = 0.5F;
+
+    private long lastTime;
+
     private Timer t;
 
-    private boolean movingUp = false;
-    private boolean movingDown = false;
+    private boolean vk_up = false;
+    private boolean vk_down = false;
+
+    private boolean vk_w = false;
+    private boolean vk_s = false;
 
     private GameObject[] objects;
 
+    private GameType type = GameType.SINGLE_PLAYER;
+
+    private long restartTime = -1;
+
     public PlayField()
     {
-        super();
+        objects = new GameObject[] { new Player(this, new Point2(0F, 0F), BAT_WIDTH, BAT_HEIGHT, Color.WHITE), new Ball(this, new Point2(0F, 0F), BALL_SIZE, BALL_SIZE, Color.WHITE, this), new Player(this, new Point2(0F, 0F), BAT_WIDTH, BAT_HEIGHT, Color.WHITE) };
 
-        System.out.println(this.hasFocus());
-        p = new Player();
-        b = new Ball();
-
-        t = new Timer(16, new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                if (movingUp)
-                {
-                    p.setPlayer2_Position(p.getPlayer2_Position() - 10);
-                }
-                if (movingDown)
-                {
-                    p.setPlayer2_Position(p.getPlayer2_Position() + 10);
-                }
-
-                repaint();
-                t.restart();
-            }
-        });
-
-        t.start();
-
+        t = new Timer(1, this);
         addKeyListener(this);
+    }
 
-        objects = new GameObject[] { new Player(), new Ball(), new Player() };
+    public void initGame(GameType type)
+    {
+        float width = getWidth();
+        float height = getHeight();
+
+        float halfX = width / 2F;
+        float halfY = height / 2F;
+
+        this.type = type;
+
+        objects[0].setLocation(new Point2(BAT_TO_BORDER_DISTANCE, halfY));
+        objects[1].setLocation(new Point2(halfX, halfY));
+        objects[2].setLocation(new Point2(width - BAT_TO_BORDER_DISTANCE, halfY));
+
+        objects[1].setVelocity(new Vec2(BALL_VELOCITY, BALL_VELOCITY));
+
+        lastTime = System.currentTimeMillis();
+        t.start();
     }
 
     @Override
@@ -67,30 +76,17 @@ public class PlayField extends JPanel implements KeyListener, ActionListener
     {
         super.paint(g);
 
+        Graphics2D g2d = (Graphics2D) (g);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, getWidth(), getHeight());
-        g.setColor(Color.WHITE);
 
-        /* START POSITION */
-
-        g.fillRect(border_to_player, p.getPlayerPosition(), 10, playerHeight); // Player
-                                                                               // on
-                                                                               // the
-                                                                               // left
-                                                                               // side
-
-        g.fillRect((getWidth() - border_to_player) - 10, p.getPlayer2_Position(), 10, playerHeight); // Player
-                                                                                                     // on
-                                                                                                     // the
-                                                                                                     // right
-                                                                                                     // side
-
-        g.fillRect(b.getX_Ball(), b.getY_Ball(), 20, 20); // Ball
-
-     
-        // repaint();
-        // movePlayer(g);
-        // drawScore(g, score);
+        for (int i = 0; i < objects.length; i++)
+        {
+            objects[i].drawObject(g);
+        }
     }
 
     @Override
@@ -98,11 +94,20 @@ public class PlayField extends JPanel implements KeyListener, ActionListener
     {
         if (e.getKeyCode() == KeyEvent.VK_UP)
         {
-            movingUp = true;
+            vk_up = true;
         }
         if (e.getKeyCode() == KeyEvent.VK_DOWN)
         {
-            movingDown = true;
+            vk_down = true;
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_W)
+        {
+            vk_w = true;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_S)
+        {
+            vk_s = true;
         }
     }
 
@@ -111,11 +116,20 @@ public class PlayField extends JPanel implements KeyListener, ActionListener
     {
         if (e.getKeyCode() == KeyEvent.VK_UP)
         {
-            movingUp = false;
+            vk_up = false;
         }
         if (e.getKeyCode() == KeyEvent.VK_DOWN)
         {
-            movingDown = false;
+            vk_down = false;
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_W)
+        {
+            vk_w = false;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_S)
+        {
+            vk_s = false;
         }
     }
 
@@ -126,26 +140,96 @@ public class PlayField extends JPanel implements KeyListener, ActionListener
 
     public boolean isMovingUp()
     {
-        return movingUp;
+        return vk_up;
     }
 
     public void setMovingUp(boolean movingUp)
     {
-        this.movingUp = movingUp;
+        this.vk_up = movingUp;
     }
 
     public boolean isMovingDown()
     {
-        return movingDown;
+        return vk_down;
     }
 
     public void setMovingDown(boolean movingDown)
     {
-        this.movingDown = movingDown;
+        this.vk_down = movingDown;
+    }
+
+    private void setPlayerVelocity(GameObject player, boolean up, boolean down)
+    {
+        if (up && !down)
+        {
+            player.setVelocity(new Vec2(0F, -BALL_VELOCITY));
+        }
+        else if (down && !up)
+        {
+            player.setVelocity(new Vec2(0F, BALL_VELOCITY));
+        }
+        else
+        {
+            player.setVelocity(new Vec2(0F, 0F));
+        }
     }
 
     @Override
     public void actionPerformed(ActionEvent e)
     {
+        if (type == GameType.SINGLE_PLAYER || type == GameType.LOCAL_MULTI_PLAYER || type == GameType.MULTI_PLAYER_HOST)
+        {
+            setPlayerVelocity(objects[0], vk_w, vk_s);
+        }
+
+        if (type == GameType.LOCAL_MULTI_PLAYER || type == GameType.MULTI_PLAYER_GUEST)
+        {
+            setPlayerVelocity(objects[2], vk_up, vk_down);
+        }
+
+        if (restartTime != -1 && System.currentTimeMillis() - restartTime >= 2000)
+        {
+            objects[1].setVelocity(new Vec2(BALL_VELOCITY, BALL_VELOCITY));
+            restartTime = -1;
+        }
+
+        for (int i = 0; i < objects.length; i++)
+        {
+            objects[i].update(System.currentTimeMillis() - lastTime);
+        }
+
+        if (type == GameType.SINGLE_PLAYER)
+        {
+            float y = objects[1].getLocation().y;
+            float height = getHeight();
+            float halfHeight = BAT_HEIGHT / 2F;
+
+            if (y < halfHeight)
+            {
+                y = halfHeight;
+            }
+            else if (y > height - halfHeight)
+            {
+                y = height - halfHeight;
+            }
+
+            objects[2].setLocation(new Point2(getWidth() - BAT_TO_BORDER_DISTANCE, y));
+        }
+
+        lastTime = System.currentTimeMillis();
+
+        repaint();
+        setFocusable(true);
+        requestFocus(true);
+
+        t.restart();
+    }
+
+    @Override
+    public void ballOutOfField(int player)
+    {
+        objects[1].setLocation(new Point2(getWidth() / 2F, getHeight() / 2F));
+        objects[1].setVelocity(new Vec2(0F, 0F));
+        restartTime = System.currentTimeMillis();
     }
 }
