@@ -14,6 +14,7 @@ import javax.swing.Timer;
 
 import pong.math.Point2;
 import pong.math.Vec2;
+import pong.net.GameConnection;
 
 public class PlayField extends JPanel implements KeyListener, ActionListener, IBallListener
 {
@@ -40,6 +41,7 @@ public class PlayField extends JPanel implements KeyListener, ActionListener, IB
     private GameObject[] objects;
 
     private GameType type = GameType.SINGLE_PLAYER;
+    private GameConnection connection = null;
 
     private long restartTime = -1;
 
@@ -69,6 +71,16 @@ public class PlayField extends JPanel implements KeyListener, ActionListener, IB
 
         lastTime = System.currentTimeMillis();
         t.start();
+    }
+
+    public GameConnection getConnection()
+    {
+        return connection;
+    }
+
+    public void setConnection(GameConnection connection)
+    {
+        this.connection = connection;
     }
 
     @Override
@@ -177,25 +189,25 @@ public class PlayField extends JPanel implements KeyListener, ActionListener, IB
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        if (type == GameType.SINGLE_PLAYER || type == GameType.LOCAL_MULTI_PLAYER || type == GameType.MULTI_PLAYER_HOST)
-        {
-            setPlayerVelocity(objects[0], vk_w, vk_s);
-        }
-
         if (type == GameType.LOCAL_MULTI_PLAYER || type == GameType.MULTI_PLAYER_GUEST)
         {
             setPlayerVelocity(objects[2], vk_up, vk_down);
+        }
+
+        if (type == GameType.SINGLE_PLAYER || type == GameType.LOCAL_MULTI_PLAYER || type == GameType.MULTI_PLAYER_HOST)
+        {
+            setPlayerVelocity(objects[0], vk_w, vk_s);
+
+            for (int i = 0; i < objects.length; i++)
+            {
+                objects[i].update(System.currentTimeMillis() - lastTime);
+            }
         }
 
         if (restartTime != -1 && System.currentTimeMillis() - restartTime >= 2000)
         {
             objects[1].setVelocity(new Vec2(BALL_VELOCITY, BALL_VELOCITY));
             restartTime = -1;
-        }
-
-        for (int i = 0; i < objects.length; i++)
-        {
-            objects[i].update(System.currentTimeMillis() - lastTime);
         }
 
         if (type == GameType.SINGLE_PLAYER)
@@ -214,6 +226,17 @@ public class PlayField extends JPanel implements KeyListener, ActionListener, IB
             }
 
             objects[2].setLocation(new Point2(getWidth() - BAT_TO_BORDER_DISTANCE, y));
+        }
+        else if (type == GameType.MULTI_PLAYER_GUEST)
+        {
+            if (connection != null)
+            {
+                float[] coords = new float[3];
+
+                connection.readValues(coords, 3);
+                objects[0].setLocation(new Point2(BAT_TO_BORDER_DISTANCE, coords[0]));
+                objects[1].setLocation(new Point2(coords[1], coords[2]));
+            }
         }
 
         lastTime = System.currentTimeMillis();

@@ -1,5 +1,6 @@
 package pong.net;
 
+import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -19,21 +20,38 @@ public class GameConnection extends Thread
         this.socket = socket;
         this.handler = handler;
         this.receiveSize = receiveSize;
-        dis = new DataInputStream(socket.getInputStream());
+        dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
         dos = new DataOutputStream(socket.getOutputStream());
+
+        socket.setTcpNoDelay(true);
     }
 
-    public void sendData(int[] data)
+    public void sendData(float[] data)
     {
         try
         {
             for (int i = 0; i < data.length; i++)
             {
-                dos.writeInt(data[i]);
+                dos.writeFloat(data[i]);
             }
         }
         catch (IOException e)
         {
+        }
+    }
+
+    public void readValues(float[] f, int n)
+    {
+        try
+        {
+            for (int i = 0; i < n; i++)
+            {
+                f[i] = dis.readFloat();
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
         }
     }
 
@@ -53,11 +71,11 @@ public class GameConnection extends Thread
                 int available = dis.available() >> 2;
                 if (available >= receiveSize)
                 {
-                    int[] data = new int[receiveSize];
+                    float[] data = new float[receiveSize];
 
                     for (int i = 0; i < receiveSize; i++)
                     {
-                        data[i] = dis.readInt();
+                        data[i] = dis.readFloat();
                     }
 
                     handler.dataArrived(data);
