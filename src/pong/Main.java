@@ -1,12 +1,11 @@
 package pong;
 
+import pong.gui.MainFrame;
+
 public class Main
 {
-
     public static void main(String[] args)
     {
-        new GUI().setVisible(true);
-
+        new MainFrame().setVisible(true);
     }
-
 }

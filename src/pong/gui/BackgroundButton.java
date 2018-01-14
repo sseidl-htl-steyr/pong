@@ -1,4 +1,4 @@
-package pong;
+package pong.gui;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -7,6 +7,8 @@ import javax.swing.JButton;
 
 public class BackgroundButton extends JButton
 {
+    private static final long serialVersionUID = -5878185791126151308L;
+
     Image bgImage;
 
     BackgroundButton(Image bgImage)

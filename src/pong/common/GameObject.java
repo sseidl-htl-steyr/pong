@@ -1,19 +1,15 @@
-package pong;
+package pong.common;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
-import java.util.LinkedList;
 
 import pong.math.Point2;
 import pong.math.Vec2;
 
 public abstract class GameObject
 {
-    private static LinkedList<GameObject> instances = new LinkedList<GameObject>();
-
-    private PlayField pf;
     protected Point2 location;
     private int width;
     private int height;
@@ -21,17 +17,14 @@ public abstract class GameObject
     protected Vec2 velocity;
     private boolean passive;
 
-    public GameObject(PlayField pf, Point2 location, int width, int height, Color color, boolean passive)
+    public GameObject(Point2 location, int width, int height, Color color, boolean passive)
     {
-        this.pf = pf;
         this.location = location;
         this.width = width;
         this.height = height;
         this.color = color;
         this.passive = passive;
         velocity = new Vec2(0F, 0F);
-
-        instances.add(this);
     }
 
     public Point2 getLocation()
@@ -96,7 +89,7 @@ public abstract class GameObject
         g2d.setTransform(tf);
     }
 
-    public void update(float dt)
+    public void update(float dt, GameObject[] objects)
     {
         location = Vec2.add(location, Vec2.multiply(velocity, dt));
 
@@ -114,9 +107,9 @@ public abstract class GameObject
             location.x = halfWidth;
             collisionDetected(true, 0);
         }
-        else if (maxX > pf.getWidth())
+        else if (maxX > GameConstants.GAME_WIDTH)
         {
-            location.x = pf.getWidth() - halfWidth;
+            location.x = GameConstants.GAME_WIDTH - halfWidth;
             collisionDetected(true, 0);
         }
 
@@ -125,16 +118,18 @@ public abstract class GameObject
             location.y = halfHeight;
             collisionDetected(true, 1);
         }
-        else if (maxY > pf.getHeight())
+        else if (maxY > GameConstants.GAME_HEIGHT)
         {
-            location.y = pf.getHeight() - halfHeight;
+            location.y = GameConstants.GAME_HEIGHT - halfHeight;
             collisionDetected(true, 1);
         }
 
         if (!passive)
         {
-            for (GameObject obj : instances)
+            for (int i = 0; i < objects.length; i++)
             {
+                GameObject obj = objects[i];
+
                 if (obj != this)
                 {
                     float objHalfWidth = obj.width / 2F;

@@ -1,4 +1,4 @@
-package pong;
+package pong.gui;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -7,6 +7,8 @@ import javax.swing.JPanel;
 
 public class BackgroundPanel extends JPanel
 {
+    private static final long serialVersionUID = -4917619106067488731L;
+
     Image bgImage;
 
     BackgroundPanel(Image bgImage)
