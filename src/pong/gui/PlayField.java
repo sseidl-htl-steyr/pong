@@ -37,7 +37,7 @@ public class PlayField extends JPanel implements KeyListener, ActionListener
     public PlayField(IGameCancelledListener listener)
     {
         this.listener = listener;
-        t = new Timer(1, this);
+        t = new Timer(8, this);
         addKeyListener(this);
     }
 
